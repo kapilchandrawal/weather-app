@@ -1,5 +1,12 @@
+import CurrentLocation from "./components/CurrentLocation";
+import "./styles/App.css";
+
 function App() {
-  return <h1>Weather App</h1>;
+  return (
+    <div className="container">
+      <CurrentLocation />
+    </div>
+  );
 }
 
 export default App;
