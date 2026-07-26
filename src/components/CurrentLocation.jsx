@@ -2,42 +2,38 @@ import { useEffect, useState } from "react";
 import { getCurrentWeather } from "../services/weatherService";
 
 function CurrentLocation() {
-  const [location, setLocation] = useState({
-    latitude: null,
-    longitude: null,
-  });
-
   const [weather, setWeather] = useState(null);
-
   const [loading, setLoading] = useState(true);
-
   const [error, setError] = useState("");
 
   useEffect(() => {
     if (!navigator.geolocation) {
-      setError("Geolocation is not supported.");
+      setError("Geolocation is not supported by your browser.");
       setLoading(false);
       return;
     }
 
     navigator.geolocation.getCurrentPosition(
       async (position) => {
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
-
-        setLocation({
-          latitude,
-          longitude,
-        });
-
         try {
-          const weatherData = await getCurrentWeather(latitude, longitude);
-          setWeather(weatherData);
+          const weatherData = await getCurrentWeather(
+            position.coords.latitude,
+            position.coords.longitude,
+          );
+
+          setWeather({
+            city: weatherData.name,
+            country: weatherData.sys.country,
+            temperature: Math.round(weatherData.main.temp),
+            humidity: weatherData.main.humidity,
+            condition: weatherData.weather[0].main,
+            description: weatherData.weather[0].description,
+          });
         } catch (err) {
           setError(err.message);
+        } finally {
+          setLoading(false);
         }
-
-        setLoading(false);
       },
       () => {
         setError("Location access denied.");
@@ -56,9 +52,23 @@ function CurrentLocation() {
 
   return (
     <div>
-      <h2>Current Weather</h2>
+      <h1>{weather.city}</h1>
 
-      <pre>{JSON.stringify(weather, null, 2)}</pre>
+      <h3>{weather.country}</h3>
+
+      <h2>{weather.temperature}°C</h2>
+
+      <p>
+        <strong>Condition:</strong> {weather.condition}
+      </p>
+
+      <p>
+        <strong>Description:</strong> {weather.description}
+      </p>
+
+      <p>
+        <strong>Humidity:</strong> {weather.humidity}%
+      </p>
     </div>
   );
 }
