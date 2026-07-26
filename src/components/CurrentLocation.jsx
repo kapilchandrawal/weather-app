@@ -3,6 +3,7 @@ import { getCurrentWeather } from "../services/weatherService";
 import LiveClock from "./LiveClock";
 import { dateBuilder } from "../utils/dateBuilder";
 import { weatherIcons } from "../utils/weatherIcons";
+import "../styles/CurrentLocation.css";
 
 function CurrentLocation() {
   const [weather, setWeather] = useState(null);
@@ -61,33 +62,40 @@ function CurrentLocation() {
   const WeatherIcon = weatherIcons[weather.condition] || weatherIcons.Clear;
 
   return (
-    <div>
-      <h1>{weather.city}</h1>
+    <div className="weather-container">
+      <div className="weather-card">
+        <h1>{weather.city}</h1>
 
-      <h3>{weather.country}</h3>
+        <h3>{weather.country}</h3>
 
-      <div className="weather-info">
-        <div className="weather-icon">
-          <WeatherIcon size={90} color="#facc15" />
+        <div className="weather-info">
+          <div className="weather-icon">
+            <WeatherIcon size={90} color="#facc15" />
+          </div>
+
+          <h2 className="temperature">{weather.temperature}°C</h2>
+
+          <div className="time">
+            <LiveClock />
+          </div>
+
+          <p className="date">{dateBuilder(new Date())}</p>
         </div>
-        <h2>{weather.temperature}°C</h2>
 
-        <LiveClock />
+        <div className="weather-details">
+          <p>
+            <strong>Condition:</strong> {weather.condition}
+          </p>
 
-        <p>{dateBuilder(new Date())}</p>
+          <p>
+            <strong>Description:</strong> {weather.description}
+          </p>
+
+          <p>
+            <strong>Humidity:</strong> {weather.humidity}%
+          </p>
+        </div>
       </div>
-
-      <p>
-        <strong>Condition:</strong> {weather.condition}
-      </p>
-
-      <p>
-        <strong>Description:</strong> {weather.description}
-      </p>
-
-      <p>
-        <strong>Humidity:</strong> {weather.humidity}%
-      </p>
     </div>
   );
 }
