@@ -1,14 +1,42 @@
 import { useEffect, useState } from "react";
-import { getCurrentWeather } from "../services/weatherService";
+import { getCurrentWeather, getWeatherByCity } from "../services/weatherService";
 import LiveClock from "./LiveClock";
 import { dateBuilder } from "../utils/dateBuilder";
 import { weatherIcons } from "../utils/weatherIcons";
 import "../styles/CurrentLocation.css";
+import SearchBar from "./SearchBar";
 
 function CurrentLocation() {
   const [weather, setWeather] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const updateWeather = (weatherData) => {
+    setWeather({
+      city: weatherData.name,
+      country: weatherData.sys.country,
+      temperature: Math.round(weatherData.main.temp),
+      humidity: weatherData.main.humidity,
+      condition: weatherData.weather[0].main,
+      description: weatherData.weather[0].description,
+    });
+  };
+
+  const handleCitySearch = async (city) => {
+    try {
+      setLoading(true);
+
+      const weatherData = await getWeatherByCity(city);
+
+      updateWeather(weatherData);
+
+      setError("");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (!navigator.geolocation) {
@@ -25,14 +53,7 @@ function CurrentLocation() {
             position.coords.longitude,
           );
 
-          setWeather({
-            city: weatherData.name,
-            country: weatherData.sys.country,
-            temperature: Math.round(weatherData.main.temp),
-            humidity: weatherData.main.humidity,
-            condition: weatherData.weather[0].main,
-            description: weatherData.weather[0].description,
-          });
+          updateWeather(weatherData);
         } catch (err) {
           setError(err.message);
         } finally {
@@ -64,6 +85,7 @@ function CurrentLocation() {
   return (
     <div className="weather-container">
       <div className="weather-card">
+        <SearchBar onSearch={handleCitySearch} />
         <h1>{weather.city}</h1>
 
         <h3>{weather.country}</h3>
