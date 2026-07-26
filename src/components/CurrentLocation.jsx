@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { getCurrentWeather } from "../services/weatherService";
 
 function CurrentLocation() {
   const [location, setLocation] = useState({
@@ -6,59 +7,58 @@ function CurrentLocation() {
     longitude: null,
   });
 
+  const [weather, setWeather] = useState(null);
+
   const [loading, setLoading] = useState(true);
+
   const [error, setError] = useState("");
 
   useEffect(() => {
     if (!navigator.geolocation) {
-      setError("Geolocation is not supported by your browser.");
+      setError("Geolocation is not supported.");
       setLoading(false);
       return;
     }
 
     navigator.geolocation.getCurrentPosition(
-      (position) => {
+      async (position) => {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+
         setLocation({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
+          latitude,
+          longitude,
         });
+
+        try {
+          const weatherData = await getCurrentWeather(latitude, longitude);
+          setWeather(weatherData);
+        } catch (err) {
+          setError(err.message);
+        }
 
         setLoading(false);
       },
       () => {
-        setError("Location access denied. Please enable location services.");
+        setError("Location access denied.");
         setLoading(false);
       },
     );
   }, []);
 
   if (loading) {
-    return (
-      <div>
-        <h2>Detecting your location...</h2>
-      </div>
-    );
+    return <h2>Loading weather...</h2>;
   }
 
   if (error) {
-    return (
-      <div>
-        <h2>{error}</h2>
-      </div>
-    );
+    return <h2>{error}</h2>;
   }
 
   return (
     <div>
-      <h2>Location Detected</h2>
+      <h2>Current Weather</h2>
 
-      <p>
-        <strong>Latitude:</strong> {location.latitude}
-      </p>
-
-      <p>
-        <strong>Longitude:</strong> {location.longitude}
-      </p>
+      <pre>{JSON.stringify(weather, null, 2)}</pre>
     </div>
   );
 }
