@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getCurrentWeather } from "../services/weatherService";
 import LiveClock from "./LiveClock";
 import { dateBuilder } from "../utils/dateBuilder";
+import { weatherIcons } from "../utils/weatherIcons";
 
 function CurrentLocation() {
   const [weather, setWeather] = useState(null);
@@ -45,12 +46,19 @@ function CurrentLocation() {
   }, []);
 
   if (loading) {
-    return <h2>Loading weather...</h2>;
+    return (
+      <div>
+        <h2>📍 Detecting your location...</h2>
+        <p>Please allow location access to fetch the latest weather.</p>
+      </div>
+    );
   }
 
   if (error) {
     return <h2>{error}</h2>;
   }
+
+  const WeatherIcon = weatherIcons[weather.condition] || weatherIcons.Clear;
 
   return (
     <div>
@@ -58,7 +66,10 @@ function CurrentLocation() {
 
       <h3>{weather.country}</h3>
 
-      <div>
+      <div className="weather-info">
+        <div className="weather-icon">
+          <WeatherIcon size={90} color="#facc15" />
+        </div>
         <h2>{weather.temperature}°C</h2>
 
         <LiveClock />
