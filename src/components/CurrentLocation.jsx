@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { getCurrentWeather } from "../services/weatherService";
+import LiveClock from "./LiveClock";
+import { dateBuilder } from "../utils/dateBuilder";
 
 function CurrentLocation() {
   const [weather, setWeather] = useState(null);
@@ -56,7 +58,13 @@ function CurrentLocation() {
 
       <h3>{weather.country}</h3>
 
-      <h2>{weather.temperature}°C</h2>
+      <div>
+        <h2>{weather.temperature}°C</h2>
+
+        <LiveClock />
+
+        <p>{dateBuilder(new Date())}</p>
+      </div>
 
       <p>
         <strong>Condition:</strong> {weather.condition}
