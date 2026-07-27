@@ -45,12 +45,15 @@ body {
 }
 
 .weather-details {
-  margin-top: 28px;
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   text-align: left;
 }
 
 .weather-details p {
-  margin: 10px 0;
+  margin: 0;
 }
 
 .time h3 {

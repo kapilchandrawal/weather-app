@@ -21,6 +21,9 @@ function SearchWeatherCard() {
       condition: weatherData.weather[0].main,
       description: weatherData.weather[0].description,
       timezone: weatherData.timezone,
+      feelsLike: Math.round(weatherData.main.feels_like),
+      pressure: weatherData.main.pressure,
+      windSpeed: weatherData.wind.speed,
     });
   };
 
@@ -83,7 +86,23 @@ function SearchWeatherCard() {
           </p>
 
           <p>
+            <strong>Temperature:</strong> {weather.temperature}°C
+          </p>
+
+          <p>
+            <strong>Feels Like:</strong> {weather.feelsLike}°C
+          </p>
+
+          <p>
             <strong>Humidity:</strong> {weather.humidity}%
+          </p>
+
+          <p>
+            <strong>Wind Speed:</strong> {weather.windSpeed} m/s
+          </p>
+
+          <p>
+            <strong>Pressure:</strong> {weather.pressure} hPa
           </p>
         </div>
       </>
