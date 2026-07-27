@@ -5,6 +5,7 @@ import SearchBar from "./SearchBar";
 import { dateBuilder } from "../utils/dateBuilder";
 import { weatherIcons } from "../utils/weatherIcons";
 import { getCityDate, formatUnixTime } from "../utils/timeUtils";
+import backgroundImages from "../utils/backgroundImages";
 import "../styles/WeatherCard.css";
 
 function SearchWeatherCard() {
@@ -62,8 +63,16 @@ function SearchWeatherCard() {
 
     const sunsetTime = formatUnixTime(weather.sunset, weather.timezone);
 
+    const background =
+      backgroundImages[weather.condition] || backgroundImages.Clear;
+
     return (
-      <>
+      <div
+        //   className="weather-card"
+        style={{
+          backgroundImage: `url(${background})`,
+        }}
+      >
         <h1>{weather.city}</h1>
 
         <h3>{weather.country}</h3>
@@ -110,7 +119,7 @@ function SearchWeatherCard() {
           <p>
             <strong>Pressure:</strong> {weather.pressure} hPa
           </p>
-          
+
           <p>
             <strong>Sunrise:</strong> {sunriseTime}
           </p>
@@ -119,7 +128,7 @@ function SearchWeatherCard() {
             <strong>Sunset:</strong> {sunsetTime}
           </p>
         </div>
-      </>
+      </div>
     );
   };
 
