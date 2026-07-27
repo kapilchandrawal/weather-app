@@ -3,7 +3,7 @@ import { getCurrentWeather } from "../services/weatherService";
 import LiveClock from "./LiveClock";
 import { dateBuilder } from "../utils/dateBuilder";
 import { weatherIcons } from "../utils/weatherIcons";
-import { getCityDate } from "../utils/timeUtils";
+import { getCityDate, formatUnixTime } from "../utils/timeUtils";
 import "../styles/WeatherCard.css";
 
 function CurrentLocationCard() {
@@ -23,6 +23,8 @@ function CurrentLocationCard() {
       feelsLike: Math.round(weatherData.main.feels_like),
       pressure: weatherData.main.pressure,
       windSpeed: weatherData.wind.speed,
+      sunrise: weatherData.sys.sunrise,
+      sunset: weatherData.sys.sunset,
     });
   };
 
@@ -72,6 +74,10 @@ function CurrentLocationCard() {
 
   const WeatherIcon = weatherIcons[weather.condition] || weatherIcons.Clear;
 
+  const sunriseTime = formatUnixTime(weather.sunrise, weather.timezone);
+
+  const sunsetTime = formatUnixTime(weather.sunset, weather.timezone);
+
   return (
     <div className="weather-card">
       <h1>{weather.city}</h1>
@@ -119,6 +125,14 @@ function CurrentLocationCard() {
 
         <p>
           <strong>Pressure:</strong> {weather.pressure} hPa
+        </p>
+
+        <p>
+          <strong>Sunrise:</strong> {sunriseTime}
+        </p>
+
+        <p>
+          <strong>Sunset:</strong> {sunsetTime}
         </p>
       </div>
     </div>

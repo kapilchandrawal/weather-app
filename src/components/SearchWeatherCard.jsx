@@ -4,7 +4,7 @@ import LiveClock from "./LiveClock";
 import SearchBar from "./SearchBar";
 import { dateBuilder } from "../utils/dateBuilder";
 import { weatherIcons } from "../utils/weatherIcons";
-import { getCityDate } from "../utils/timeUtils";
+import { getCityDate, formatUnixTime } from "../utils/timeUtils";
 import "../styles/WeatherCard.css";
 
 function SearchWeatherCard() {
@@ -24,6 +24,8 @@ function SearchWeatherCard() {
       feelsLike: Math.round(weatherData.main.feels_like),
       pressure: weatherData.main.pressure,
       windSpeed: weatherData.wind.speed,
+      sunrise: weatherData.sys.sunrise,
+      sunset: weatherData.sys.sunset,
     });
   };
 
@@ -55,6 +57,10 @@ function SearchWeatherCard() {
     const cityDate = getCityDate(weather.timezone);
 
     const WeatherIcon = weatherIcons[weather.condition] || weatherIcons.Clear;
+
+    const sunriseTime = formatUnixTime(weather.sunrise, weather.timezone);
+
+    const sunsetTime = formatUnixTime(weather.sunset, weather.timezone);
 
     return (
       <>
@@ -103,6 +109,14 @@ function SearchWeatherCard() {
 
           <p>
             <strong>Pressure:</strong> {weather.pressure} hPa
+          </p>
+          
+          <p>
+            <strong>Sunrise:</strong> {sunriseTime}
+          </p>
+
+          <p>
+            <strong>Sunset:</strong> {sunsetTime}
           </p>
         </div>
       </>
