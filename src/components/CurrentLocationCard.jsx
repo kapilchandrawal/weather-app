@@ -3,6 +3,7 @@ import { getCurrentWeather } from "../services/weatherService";
 import LiveClock from "./LiveClock";
 import { dateBuilder } from "../utils/dateBuilder";
 import { weatherIcons } from "../utils/weatherIcons";
+import { getCityDate } from "../utils/timeUtils";
 import "../styles/WeatherCard.css";
 
 function CurrentLocationCard() {
@@ -18,6 +19,7 @@ function CurrentLocationCard() {
       humidity: weatherData.main.humidity,
       condition: weatherData.weather[0].main,
       description: weatherData.weather[0].description,
+      timezone: weatherData.timezone,
     });
   };
 
@@ -63,6 +65,8 @@ function CurrentLocationCard() {
     return <h2>{error}</h2>;
   }
 
+  const cityDate = getCityDate(weather.timezone);
+
   const WeatherIcon = weatherIcons[weather.condition] || weatherIcons.Clear;
 
   return (
@@ -79,10 +83,10 @@ function CurrentLocationCard() {
         <h2 className="temperature">{weather.temperature}°C</h2>
 
         <div className="time">
-          <LiveClock />
+          <LiveClock timezone={weather.timezone} />
         </div>
 
-        <p className="date">{dateBuilder(new Date())}</p>
+        <p className="date">{dateBuilder(cityDate)}</p>
       </div>
 
       <div className="weather-details">

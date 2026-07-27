@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
+import { getCityDate } from "../utils/timeUtils";
 
-function LiveClock() {
-  const [time, setTime] = useState(new Date());
+function LiveClock({ timezone }) {
+  const [time, setTime] = useState(getCityDate(timezone));
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setTime(new Date());
+      setTime(getCityDate(timezone));
     }, 1000);
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [timezone]);
 
   return (
     <h3>

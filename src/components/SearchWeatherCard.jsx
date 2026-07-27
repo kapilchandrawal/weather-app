@@ -4,6 +4,7 @@ import LiveClock from "./LiveClock";
 import SearchBar from "./SearchBar";
 import { dateBuilder } from "../utils/dateBuilder";
 import { weatherIcons } from "../utils/weatherIcons";
+import { getCityDate } from "../utils/timeUtils";
 import "../styles/WeatherCard.css";
 
 function SearchWeatherCard() {
@@ -19,6 +20,7 @@ function SearchWeatherCard() {
       humidity: weatherData.main.humidity,
       condition: weatherData.weather[0].main,
       description: weatherData.weather[0].description,
+      timezone: weatherData.timezone,
     });
   };
 
@@ -47,6 +49,8 @@ function SearchWeatherCard() {
       return <p>🔍 Search for a city to view weather.</p>;
     }
 
+    const cityDate = getCityDate(weather.timezone);
+
     const WeatherIcon = weatherIcons[weather.condition] || weatherIcons.Clear;
 
     return (
@@ -63,10 +67,10 @@ function SearchWeatherCard() {
           <h2 className="temperature">{weather.temperature}°C</h2>
 
           <div className="time">
-            <LiveClock />
+            <LiveClock timezone={weather.timezone} />
           </div>
 
-          <p className="date">{dateBuilder(new Date())}</p>
+          <p className="date">{dateBuilder(cityDate)}</p>
         </div>
 
         <div className="weather-details">
