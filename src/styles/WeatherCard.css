@@ -5,13 +5,6 @@ body {
   min-height: 100vh;
 }
 
-.weather-container {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .weather-card {
   width: 360px;
   padding: 32px;
@@ -64,4 +57,8 @@ body {
   margin: 0;
   font-size: 28px;
   font-weight: 500;
+}
+
+.weather-card {
+    box-sizing: border-box;
 }

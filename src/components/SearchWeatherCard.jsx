@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
-import { getCurrentWeather, getWeatherByCity } from "../services/weatherService";
+import { useState } from "react";
+import { getWeatherByCity } from "../services/weatherService";
 import LiveClock from "./LiveClock";
+import SearchBar from "./SearchBar";
 import { dateBuilder } from "../utils/dateBuilder";
 import { weatherIcons } from "../utils/weatherIcons";
-import "../styles/CurrentLocation.css";
-import SearchBar from "./SearchBar";
+import "../styles/WeatherCard.css";
 
-function CurrentLocation() {
+function SearchWeatherCard() {
   const [weather, setWeather] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const updateWeather = (weatherData) => {
@@ -25,67 +25,32 @@ function CurrentLocation() {
   const handleCitySearch = async (city) => {
     try {
       setLoading(true);
+      setError("");
 
       const weatherData = await getWeatherByCity(city);
 
       updateWeather(weatherData);
-
-      setError("");
     } catch (err) {
       setError(err.message);
+      setWeather(null);
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    if (!navigator.geolocation) {
-      setError("Geolocation is not supported by your browser.");
-      setLoading(false);
-      return;
+  const renderContent = () => {
+    if (loading) {
+      return <p>Loading weather...</p>;
     }
 
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        try {
-          const weatherData = await getCurrentWeather(
-            position.coords.latitude,
-            position.coords.longitude,
-          );
+    if (!weather) {
+      return <p>🔍 Search for a city to view weather.</p>;
+    }
 
-          updateWeather(weatherData);
-        } catch (err) {
-          setError(err.message);
-        } finally {
-          setLoading(false);
-        }
-      },
-      () => {
-        setError("Location access denied.");
-        setLoading(false);
-      },
-    );
-  }, []);
+    const WeatherIcon = weatherIcons[weather.condition] || weatherIcons.Clear;
 
-  if (loading) {
     return (
-      <div>
-        <h2>📍 Detecting your location...</h2>
-        <p>Please allow location access to fetch the latest weather.</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return <h2>{error}</h2>;
-  }
-
-  const WeatherIcon = weatherIcons[weather.condition] || weatherIcons.Clear;
-
-  return (
-    <div className="weather-container">
-      <div className="weather-card">
-        <SearchBar onSearch={handleCitySearch} />
+      <>
         <h1>{weather.city}</h1>
 
         <h3>{weather.country}</h3>
@@ -117,9 +82,19 @@ function CurrentLocation() {
             <strong>Humidity:</strong> {weather.humidity}%
           </p>
         </div>
-      </div>
+      </>
+    );
+  };
+
+  return (
+    <div className="weather-card">
+      <SearchBar onSearch={handleCitySearch} />
+
+      {error && <p className="error">{error}</p>}
+
+      {renderContent()}
     </div>
   );
 }
 
-export default CurrentLocation;
+export default SearchWeatherCard;
