@@ -25,3 +25,15 @@ export async function getWeatherByCity(city) {
 
   return response.json();
 }
+
+export async function getForecast(lat, lon) {
+  const response = await fetch(
+    `${BASE_URL}forecast?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`,
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch forecast.");
+  }
+
+  return response.json();
+}

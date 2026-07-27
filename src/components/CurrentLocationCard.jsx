@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
-import { getCurrentWeather } from "../services/weatherService";
+import { getCurrentWeather, getForecast } from "../services/weatherService";
 import LiveClock from "./LiveClock";
 import { dateBuilder } from "../utils/dateBuilder";
 import { weatherIcons } from "../utils/weatherIcons";
 import { getCityDate, formatUnixTime } from "../utils/timeUtils";
+import ForecastList from "./ForecastList";
 import "../styles/WeatherCard.css";
 
 function CurrentLocationCard() {
   const [weather, setWeather] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [forecast, setForecast] = useState([]);
 
   const updateWeather = (weatherData) => {
     setWeather({
@@ -42,8 +44,13 @@ function CurrentLocationCard() {
             position.coords.latitude,
             position.coords.longitude,
           );
-
           updateWeather(weatherData);
+
+          const forecastData = await getForecast(
+            position.coords.latitude,
+            position.coords.longitude,
+          );
+          setForecast(forecastData.list.slice(0, 5));
         } catch (err) {
           setError(err.message);
         } finally {
@@ -135,6 +142,7 @@ function CurrentLocationCard() {
           <strong>Sunset:</strong> {sunsetTime}
         </p>
       </div>
+      <ForecastList forecasts={forecast} />
     </div>
   );
 }
