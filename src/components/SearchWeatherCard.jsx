@@ -63,16 +63,8 @@ function SearchWeatherCard() {
 
     const sunsetTime = formatUnixTime(weather.sunset, weather.timezone);
 
-    const background =
-      backgroundImages[weather.condition] || backgroundImages.Clear;
-
     return (
-      <div
-        //   className="weather-card"
-        style={{
-          backgroundImage: `url(${background})`,
-        }}
-      >
+      <>
         <h1>{weather.city}</h1>
 
         <h3>{weather.country}</h3>
@@ -128,12 +120,12 @@ function SearchWeatherCard() {
             <strong>Sunset:</strong> {sunsetTime}
           </p>
         </div>
-      </div>
+      </>
     );
   };
 
   return (
-    <div className="weather-card">
+    <div className="weather-card right-panel">
       <SearchBar onSearch={handleCitySearch} />
 
       {error && <p className="error">{error}</p>}

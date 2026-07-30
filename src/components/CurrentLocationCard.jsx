@@ -91,27 +91,33 @@ function CurrentLocationCard() {
 
   return (
     <div
-      className="weather-card"
+      className="weather-card left-panel"
       style={{
         backgroundImage: `url(${background})`,
       }}
     >
-      <h1>{weather.city}</h1>
+      <div
+        className="weather-info"
+        style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}
+      >
+        <div>
+          <h1>{weather.city}</h1>
 
-      <h3>{weather.country}</h3>
-
-      <div className="weather-info">
-        <div className="weather-icon">
-          <WeatherIcon size={90} color="#facc15" />
+          <h3>{weather.country}</h3>
         </div>
+        <div>
+          <div className="weather-icon">
+            <WeatherIcon size={90} color="#facc15" /> 
+          </div>
 
-        <h2 className="temperature">{weather.temperature}°C</h2>
+          <h2 className="temperature">{weather.temperature}°C</h2>
 
-        <div className="time">
-          <LiveClock timezone={weather.timezone} />
+          <div className="time">
+            <LiveClock timezone={weather.timezone} />
+          </div>
+
+          <p className="date">{dateBuilder(cityDate)}</p>
         </div>
-
-        <p className="date">{dateBuilder(cityDate)}</p>
       </div>
 
       <div className="weather-details">
@@ -119,13 +125,13 @@ function CurrentLocationCard() {
           <strong>Condition:</strong> {weather.condition}
         </p>
 
-        <p>
+        {/* <p>
           <strong>Description:</strong> {weather.description}
-        </p>
+        </p> */}
 
-        <p>
+        {/* <p>
           <strong>Temperature:</strong> {weather.temperature}°C
-        </p>
+        </p> */}
 
         <p>
           <strong>Feels Like:</strong> {weather.feelsLike}°C
@@ -139,7 +145,7 @@ function CurrentLocationCard() {
           <strong>Wind Speed:</strong> {weather.windSpeed} m/s
         </p>
 
-        <p>
+        {/* <p>
           <strong>Pressure:</strong> {weather.pressure} hPa
         </p>
 
@@ -149,7 +155,7 @@ function CurrentLocationCard() {
 
         <p>
           <strong>Sunset:</strong> {sunsetTime}
-        </p>
+        </p> */}
       </div>
       <ForecastList forecasts={forecast} />
     </div>

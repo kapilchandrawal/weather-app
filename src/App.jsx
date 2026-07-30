@@ -5,8 +5,10 @@ import SearchWeatherCard from "./components/SearchWeatherCard";
 function App() {
   return (
     <main className="dashboard">
-      <CurrentLocationCard />
-      <SearchWeatherCard />
+      <div className="weather-dashboard">
+        <CurrentLocationCard />
+        <SearchWeatherCard />
+      </div>
     </main>
   );
 }
