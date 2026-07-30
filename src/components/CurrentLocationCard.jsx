@@ -82,10 +82,6 @@ function CurrentLocationCard() {
 
   const WeatherIcon = weatherIcons[weather.condition] || weatherIcons.Clear;
 
-  const sunriseTime = formatUnixTime(weather.sunrise, weather.timezone);
-
-  const sunsetTime = formatUnixTime(weather.sunset, weather.timezone);
-
   const background =
     backgroundImages[weather.condition] || backgroundImages.Clear;
 
@@ -96,28 +92,24 @@ function CurrentLocationCard() {
         backgroundImage: `url(${background})`,
       }}
     >
-      <div
-        className="weather-info"
-        style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}
-      >
+      <div className="weather-header">
         <div>
           <h1>{weather.city}</h1>
-
           <h3>{weather.country}</h3>
         </div>
-        <div>
+        <div className="weather-summary">
           <div className="weather-icon">
-            <WeatherIcon size={90} color="#facc15" /> 
+            <WeatherIcon size={70} color="#facc15" />
           </div>
-
           <h2 className="temperature">{weather.temperature}°C</h2>
-
-          <div className="time">
-            <LiveClock timezone={weather.timezone} />
-          </div>
-
-          <p className="date">{dateBuilder(cityDate)}</p>
         </div>
+      </div>
+
+      <div className="weather-time">
+        <div className="time">
+          <LiveClock timezone={weather.timezone} />
+        </div>
+        <p className="date">{dateBuilder(cityDate)}</p>
       </div>
 
       <div className="weather-details">

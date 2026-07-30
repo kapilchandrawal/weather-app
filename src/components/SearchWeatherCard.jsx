@@ -4,8 +4,8 @@ import LiveClock from "./LiveClock";
 import SearchBar from "./SearchBar";
 import { dateBuilder } from "../utils/dateBuilder";
 import { weatherIcons } from "../utils/weatherIcons";
-import { getCityDate, formatUnixTime } from "../utils/timeUtils";
-import backgroundImages from "../utils/backgroundImages";
+import { getCityDate } from "../utils/timeUtils";
+// import backgroundImages from "../utils/backgroundImages";
 import "../styles/WeatherCard.css";
 
 function SearchWeatherCard() {
@@ -59,27 +59,25 @@ function SearchWeatherCard() {
 
     const WeatherIcon = weatherIcons[weather.condition] || weatherIcons.Clear;
 
-    const sunriseTime = formatUnixTime(weather.sunrise, weather.timezone);
-
-    const sunsetTime = formatUnixTime(weather.sunset, weather.timezone);
-
     return (
       <>
-        <h1>{weather.city}</h1>
-
-        <h3>{weather.country}</h3>
-
-        <div className="weather-info">
-          <div className="weather-icon">
-            <WeatherIcon size={90} color="#facc15" />
+        <div className="weather-header">
+          <div>
+            <h1>{weather.city}</h1>
+            <h3>{weather.country}</h3>
           </div>
 
-          <h2 className="temperature">{weather.temperature}°C</h2>
-
+          <div className="weather-summary">
+            <div className="weather-icon">
+              <WeatherIcon size={70} color="#facc15" />
+            </div>
+            <h2 className="temperature">{weather.temperature}°C</h2>
+          </div>
+        </div>
+        <div className="weather-time">
           <div className="time">
             <LiveClock timezone={weather.timezone} />
           </div>
-
           <p className="date">{dateBuilder(cityDate)}</p>
         </div>
 
@@ -88,13 +86,13 @@ function SearchWeatherCard() {
             <strong>Condition:</strong> {weather.condition}
           </p>
 
-          <p>
+          {/* <p>
             <strong>Description:</strong> {weather.description}
-          </p>
+          </p> */}
 
-          <p>
+          {/* <p>
             <strong>Temperature:</strong> {weather.temperature}°C
-          </p>
+          </p> */}
 
           <p>
             <strong>Feels Like:</strong> {weather.feelsLike}°C
@@ -108,7 +106,7 @@ function SearchWeatherCard() {
             <strong>Wind Speed:</strong> {weather.windSpeed} m/s
           </p>
 
-          <p>
+          {/* <p>
             <strong>Pressure:</strong> {weather.pressure} hPa
           </p>
 
@@ -118,7 +116,7 @@ function SearchWeatherCard() {
 
           <p>
             <strong>Sunset:</strong> {sunsetTime}
-          </p>
+          </p> */}
         </div>
       </>
     );
