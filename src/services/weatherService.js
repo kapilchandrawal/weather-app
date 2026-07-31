@@ -1,4 +1,5 @@
 const BASE_URL = "https://api.openweathermap.org/data/2.5/";
+const GEO_URL = "https://api.openweathermap.org/geo/1.0/";
 
 const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
@@ -15,15 +16,44 @@ export async function getCurrentWeather(lat, lon) {
 }
 
 export async function getWeatherByCity(city) {
-  const response = await fetch(
-    `${BASE_URL}weather?q=${city}&units=metric&appid=${API_KEY}`,
+  const geoResponse = await fetch(
+    `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(
+      city,
+    )}&limit=1&appid=${API_KEY}`,
   );
 
-  if (!response.ok) {
+  if (!geoResponse.ok) {
+    throw new Error("Failed to find city.");
+  }
+
+  const locations = await geoResponse.json();
+
+  if (!locations.length) {
     throw new Error("City not found.");
   }
 
-  return response.json();
+  const location = locations[0];
+
+  const weatherResponse = await fetch(
+    `${BASE_URL}weather?lat=${location.lat}&lon=${location.lon}&units=metric&appid=${API_KEY}`,
+  );
+
+  if (!weatherResponse.ok) {
+    throw new Error("Failed to fetch weather data.");
+  }
+
+  const weatherData = await weatherResponse.json();
+
+  // Keep the city/country from the geocoding result
+  // instead of relying on the nearest weather station name.
+  return {
+    ...weatherData,
+    name: location.name,
+    sys: {
+      ...weatherData.sys,
+      country: location.country,
+    },
+  };
 }
 
 export async function getForecast(lat, lon) {
