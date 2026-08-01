@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getWeatherByCity } from "../services/weatherService";
 import LiveClock from "./LiveClock";
 import SearchBar from "./SearchBar";
@@ -45,6 +45,26 @@ function SearchWeatherCard() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+  const loadDefaultCity = async () => {
+    try {
+      setLoading(true);
+      setError("");
+
+      const weatherData = await getWeatherByCity("Mumbai");
+
+      updateWeather(weatherData);
+    } catch (err) {
+      setError(err.message);
+      setWeather(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  loadDefaultCity();
+}, []);
 
   const renderContent = () => {
     if (loading) {

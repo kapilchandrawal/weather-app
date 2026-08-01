@@ -3,7 +3,7 @@ import { getCurrentWeather, getForecast } from "../services/weatherService";
 import LiveClock from "./LiveClock";
 import { dateBuilder } from "../utils/dateBuilder";
 import { weatherIcons } from "../utils/weatherIcons";
-import { getCityDate, formatUnixTime } from "../utils/timeUtils";
+import { getCityDate } from "../utils/timeUtils";
 import backgroundImages from "../utils/backgroundImages";
 import ForecastList from "./ForecastList";
 import "../styles/WeatherCard.css";
@@ -67,15 +67,40 @@ function CurrentLocationCard() {
 
   if (loading) {
     return (
-      <div>
-        <h2>📍 Detecting your location...</h2>
-        <p>Please allow location access to fetch the latest weather.</p>
+      <div className="location-state">
+        <div className="location-state-content">
+          <div className="location-icon">☁️</div>
+
+          <h2>Detecting your location</h2>
+
+          <p>
+            Your current location will be used to display
+            <br />
+            local weather information.
+          </p>
+
+          <div className="location-loader"></div>
+        </div>
       </div>
     );
   }
 
   if (error) {
-    return <h2>{error}</h2>;
+    return (
+      <div className="location-state">
+        <div className="location-state-content">
+          <div className="location-icon">📍</div>
+
+          <h2>Unable to detect your location</h2>
+
+          <p>{error}</p>
+
+          <p className="location-help">
+            Please allow location access and refresh the page.
+          </p>
+        </div>
+      </div>
+    );
   }
 
   const cityDate = getCityDate(weather.timezone);

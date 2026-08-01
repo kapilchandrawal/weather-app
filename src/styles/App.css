@@ -8,15 +8,138 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: url("../assets/backgrounds/appBackground.jpg")
-    center/cover no-repeat;
+  background: url("../assets/backgrounds/appBackground.jpg") center/cover
+    no-repeat;
 }
 
 .weather-dashboard {
-  width: 1200px;
-  height: 720px;
+  width: min(1200px, 92vw);
+  height: min(720px, 88vh);
   display: flex;
   border-radius: 30px;
   overflow: hidden;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+}
+
+/* Tablet layout */
+@media (max-width: 1050px) {
+  .dashboard {
+    padding: 24px 0;
+    box-sizing: border-box;
+  }
+
+  .weather-dashboard {
+    width: 94vw;
+    height: auto;
+    min-height: 90vh;
+    flex-direction: column;
+  }
+
+  .left-panel,
+  .right-panel {
+    flex: none;
+    width: 100%;
+  }
+
+  .left-panel {
+    min-height: 620px;
+  }
+
+  .right-panel {
+    min-height: 500px;
+  }
+}
+
+/* Mobile layout */
+@media (max-width: 600px) {
+  .dashboard {
+    padding: 12px 0;
+  }
+
+  .weather-dashboard {
+    width: 96vw;
+    min-height: auto;
+    border-radius: 20px;
+  }
+
+  .weather-card {
+    padding: 24px;
+  }
+
+  .left-panel {
+    min-height: 600px;
+  }
+
+  .right-panel {
+    min-height: 500px;
+  }
+
+  .weather-header {
+    margin-bottom: 35px;
+  }
+
+  .weather-header h1 {
+    font-size: 28px;
+  }
+
+  .weather-header h3 {
+    font-size: 18px;
+  }
+
+  .temperature {
+    font-size: 44px;
+  }
+
+  .weather-icon svg {
+    width: 55px;
+    height: 55px;
+  }
+
+  .time {
+    font-size: 24px;
+  }
+
+  .weather-details {
+    font-size: 15px;
+  }
+
+  .forecast-list {
+    gap: 8px;
+    padding-top: 24px;
+  }
+
+  .forecast-card {
+    min-width: 90px;
+    padding: 10px;
+    font-size: 12px;
+  }
+
+  .search-form {
+    gap: 8px;
+  }
+
+  .search-input {
+    min-width: 0;
+  }
+
+  .search-button {
+    padding: 12px 14px;
+  }
+
+  .location-state {
+    min-height: 500px;
+    padding: 20px;
+  }
+
+  .location-state-content {
+    padding: 28px 20px;
+  }
+
+  .location-icon {
+    font-size: 56px;
+  }
+
+  .location-state h2 {
+    font-size: 22px;
+  }
 }
