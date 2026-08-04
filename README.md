@@ -4,6 +4,14 @@ A responsive weather dashboard built with **React.js**, **Vite**, and the **Open
 
 The application detects the user's current location and displays real-time weather information. Users can also search for weather conditions in different cities, view local time, weather details, and a short-term forecast.
 
+## 🌐 Live Demo
+
+👉 https://weather-app-one-eta-62.vercel.app
+
+## 📂 GitHub Repository
+
+👉 https://github.com/kapilchandrawal/weather-app
+
 ---
 
 ## ✨ Features
