@@ -174,4 +174,3 @@ weather-app/
 
 - GitHub: https://github.com/kapilchandrawal
 - LinkedIn: https://www.linkedin.com/in/kapilchandrawal/
-```
